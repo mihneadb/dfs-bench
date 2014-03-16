@@ -1,9 +1,11 @@
+#include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #define BUFSIZE 1000
 
 int main(int argc, char **argv) {
+    MPI_Init(&argc, &argv);
 
     FILE *fp = NULL;
     char buf[BUFSIZE];
@@ -18,6 +20,7 @@ int main(int argc, char **argv) {
     }
     pclose(fp);
 
+    MPI_Finalize();
     return 0;
 }
 
