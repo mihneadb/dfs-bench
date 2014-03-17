@@ -27,6 +27,11 @@ char *read_to_end(FILE *fp, unsigned int *size_out) {
 }
 
 int main(int argc, char **argv) {
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s 'cmd to run'\n", argv[0]);
+        return 1;
+    }
+
     MPI_Init(&argc, &argv);
 
     int rank;
