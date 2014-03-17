@@ -19,6 +19,7 @@ char *read_to_end(FILE *fp) {
             string = realloc(string, capacity);
         }
         strcat(string, buf);
+        size += strlen(buf);
     }
     return string;
 }
