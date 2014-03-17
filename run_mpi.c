@@ -7,14 +7,14 @@
 #define BUFSIZE 1000
 
 char *read_to_end(FILE *fp) {
-    int size = 0;
+    int size = 1;
     int capacity = BUFSIZE;
     char buf[BUFSIZE];
     char *string = malloc(BUFSIZE * sizeof(char));
     string[0] = '\0';
 
     while (fgets(buf, BUFSIZE, fp)) {
-        if (size + BUFSIZE >= capacity) {
+        if (size + BUFSIZE > capacity) {
             capacity *= 2;
             string = realloc(string, capacity);
         }
