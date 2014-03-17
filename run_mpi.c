@@ -82,15 +82,22 @@ int main(int argc, char **argv) {
         for (i = 0; i < proc_count; ++i) {
             printf("<<< OUTPUT %d >>>\n", i);
             printf("%s\n", outputs[i]);
+
+            free(outputs[i]);
         }
+
+        free(outputs);
+        free(sizes);
+        free(requests);
     } else {
         /* send size of output to master */
         MPI_Send(&output_size, 1, MPI_UNSIGNED, MASTER, rank, MPI_COMM_WORLD);
         /* send the actual output to master */
         MPI_Send(output, output_size, MPI_CHAR, MASTER, rank, MPI_COMM_WORLD);
+
+        free(output);
     }
 
-    free(output);
 
     MPI_Finalize();
     return 0;
