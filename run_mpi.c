@@ -62,12 +62,10 @@ int main(int argc, char **argv) {
         MPI_Request *requests = malloc(proc_count * sizeof(MPI_Request));
 
         int i;
-        unsigned int size;
-
         /* first get the sizes, async */
         for (i = 1; i < proc_count; ++i) {
             /* get size of string */
-            MPI_Irecv(&size, 1, MPI_UNSIGNED, i, i, MPI_COMM_WORLD, &requests[i]);
+            MPI_Irecv(&sizes[i], 1, MPI_UNSIGNED, i, i, MPI_COMM_WORLD, &requests[i]);
         }
         for (i = 1; i < proc_count; ++i) {
             MPI_Wait(&requests[i], MPI_STATUS_IGNORE);
@@ -76,8 +74,8 @@ int main(int argc, char **argv) {
         /* then get the actual outputs, async */
         for (i = 1; i < proc_count; ++i) {
             /* allocate and receive */
-            outputs[i] = malloc(size * sizeof(char));
-            MPI_Irecv(outputs[i], size, MPI_CHAR, i, i, MPI_COMM_WORLD, &requests[i]);
+            outputs[i] = malloc(sizes[i] * sizeof(char));
+            MPI_Irecv(outputs[i], sizes[i], MPI_CHAR, i, i, MPI_COMM_WORLD, &requests[i]);
         }
         for (i = 1; i < proc_count; ++i) {
             MPI_Wait(&requests[i], MPI_STATUS_IGNORE);
