@@ -4,8 +4,9 @@
 #include <string.h>
 #include <unistd.h>
 
-#define BUFSIZE 1000
+#define BUFSIZE 2000
 #define MASTER 0
+#define FILE_PREFIX "dfs_bench_tmp_file_"
 
 char *read_to_end(FILE *fp, unsigned int *size_out) {
     int size = 1;
@@ -42,16 +43,29 @@ int main(int argc, char **argv) {
 
     FILE *fp = NULL;
 
+    /* prepare cmd */
+    char cmd[BUFSIZE];
+    char file_path[BUFSIZE];
+    sprintf(file_path, "%s%d", FILE_PREFIX, rank);
+    sprintf(cmd, "%s > %s", argv[1], file_path);
+
     /* sync up the processes */
     MPI_Barrier(MPI_COMM_WORLD);
-    fp = popen(argv[1], "r");
+
+    /* run the cmd */
+    system(cmd);
+
+    /* read the output */
+    fp = fopen(file_path, "r");
     if (!fp) {
         return 1;
     }
-
     unsigned int output_size;
     char *output = read_to_end(fp, &output_size);
-    pclose(fp);
+    fclose(fp);
+
+    /* delete the temp file */
+    unlink(file_path);
 
     /* master process will fetch all outputs from slaves */
     if (rank == MASTER) {
