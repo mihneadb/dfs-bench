@@ -3,10 +3,28 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <wordexp.h>
 
-#define BUFSIZE 2000
+#define BUFSIZE 5000
 #define MASTER 0
 #define FILE_PREFIX "dfs_bench_tmp_file_"
+
+char *expand_words(char *str) {
+    wordexp_t p;
+    size_t i;
+    char **w;
+    char *str_expanded = calloc(BUFSIZE, sizeof(char));
+
+    wordexp(str, &p, 0);
+    w = p.we_wordv;
+    for (i = 0; i < p.we_wordc; ++i) {
+        strcat(str_expanded, " ");
+        strcat(str_expanded, w[i]);
+    }
+
+    wordfree(&p);
+    return str_expanded;
+}
 
 char *read_to_end(FILE *fp, unsigned int *size_out) {
     int size = 1;
@@ -44,16 +62,18 @@ int main(int argc, char **argv) {
     FILE *fp = NULL;
 
     /* prepare cmd */
+    char *expanded_cmd = expand_words(argv[1]);
     char cmd[BUFSIZE];
     char file_path[BUFSIZE];
     sprintf(file_path, "%s%d", FILE_PREFIX, rank);
-    sprintf(cmd, "%s > %s", argv[1], file_path);
+    sprintf(cmd, "%s > %s", expanded_cmd, file_path);
 
     /* sync up the processes */
     MPI_Barrier(MPI_COMM_WORLD);
 
     /* run the cmd */
     system(cmd);
+    free(expanded_cmd);
 
     /* read the output */
     fp = fopen(file_path, "r");
