@@ -9,6 +9,7 @@
 #define MASTER 0
 #define FILE_PREFIX "dfs_bench_tmp_file_"
 
+/* http://stackoverflow.com/a/4375516 */
 char *expand_words(char *str) {
     wordexp_t p;
     size_t i;
