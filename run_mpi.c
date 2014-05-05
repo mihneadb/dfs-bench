@@ -63,6 +63,9 @@ int main(int argc, char **argv) {
     FILE *fp = NULL;
 
     /* prepare cmd */
+    char name[BUFSIZE];
+    sprintf(name, "node%03d", rank);
+    setenv("NODENAME", name, 1);
     char *expanded_cmd = expand_words(argv[1]);
     char cmd[BUFSIZE];
     char file_path[BUFSIZE];
