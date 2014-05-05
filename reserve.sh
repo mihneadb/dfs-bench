@@ -1,4 +1,5 @@
 #!/bin/bash
+# Reserve script for DAS-4
 
 # $1 - nr of nodes
 
