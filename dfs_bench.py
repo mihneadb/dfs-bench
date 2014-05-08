@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 
+import json
 import sys
 from pprint import pprint
 from parsers.iozone import IOZoneOutputParser
