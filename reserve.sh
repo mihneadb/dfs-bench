@@ -7,7 +7,7 @@ user=`whoami`
 
 out=`preserve -llist | grep $user | grep node`
 if [ $? -ne 0 ]; then
-    preserve -1 -# $1 -t 0:10:00
+    preserve -1 -# $1 -t 0:15:00
 fi
 
 out=`preserve -llist | grep $user | grep node`
