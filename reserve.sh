@@ -5,6 +5,8 @@
 
 user=`whoami`
 
+# TODO: check that reusing is proper - user might have a smaller number of
+# nodes reserved already
 out=`preserve -llist | grep $user | grep node`
 if [ $? -ne 0 ]; then
     preserve -1 -# $1 -t 0:15:00
