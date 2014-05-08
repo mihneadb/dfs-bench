@@ -51,5 +51,7 @@ if __name__ == '__main__':
                   "Here is the output:", file=sys.stderr)
             print(output, file=sys.stderr)
 
-    print(json.dumps(results, indent=2))
+    with open('results.json', 'wb') as f:
+        json.dump(results, f, indent=2)
+    print("See results in results.json.")
 
