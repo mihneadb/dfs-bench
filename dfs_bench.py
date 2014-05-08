@@ -5,7 +5,7 @@ from __future__ import print_function
 import sys
 from pprint import pprint
 from parsers.iozone import IOZoneOutputParser
-from subprocess import check_output
+from subprocess import Popen, PIPE
 
 NUM_NODES = [1, 2, 4, 8, 16, 32, 64]
 
@@ -13,6 +13,10 @@ NUM_NODES = [1, 2, 4, 8, 16, 32, 64]
 def write_machinefile(nodes, node_count):
     with open('machinefile', 'w') as f:
         f.write('\n'.join(nodes[:node_count]))
+
+def run_cmd(cmd):
+    out, err = Popen([cmd], stdout=PIPE).communicate()
+    return out
 
 
 if __name__ == '__main__':
@@ -23,7 +27,7 @@ if __name__ == '__main__':
     cmd = sys.argv[1]
 
     # reserve all the nodes from the beginning
-    check_output('./reserve.sh %d' % count)
+    run_cmd('./reserve.sh %d' % NUM_NODES[-1])
 
     # get reserved node names from the generated machinefile
     with open('machinefile') as f:
@@ -33,7 +37,7 @@ if __name__ == '__main__':
     results = {}
     for node_count in NUM_NODES:
         write_machinefile(nodes, node_count)
-        output = check_cmd('mpirun --machinefile machinefile ./run_mpi \'%s\'' % cmd)
+        output = run_cmd('mpirun --machinefile machinefile ./run_mpi \'%s\'' % cmd)
         try:
             if 'iozone' in cmd:
                 results[node_count] = IOZoneOutputParser.parse(output)
