@@ -21,6 +21,5 @@ make # build the binary
 ./make_bar_plots.py results.json
 
 # see the plots in the plots/ directory
-
 ```
 
