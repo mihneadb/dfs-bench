@@ -9,7 +9,7 @@ from parsers.iozone import IOZoneOutputParser
 from subprocess import Popen, PIPE
 
 # make sure they are in ascending order
-NUM_NODES = [1, 2, 4, 8, 16, 32, 64]
+NUM_NODES = [1, 2, 4, 8, 16]
 
 
 def write_machinefile(nodes, node_count):
