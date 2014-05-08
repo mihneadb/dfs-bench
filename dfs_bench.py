@@ -16,8 +16,8 @@ def write_machinefile(nodes, node_count):
     with open('machinefile', 'w') as f:
         f.write('\n'.join(nodes[:node_count]))
 
-def run_cmd(cmd):
-    out, err = Popen([cmd], stdout=PIPE).communicate()
+def run_cmd(cmd_args):
+    out, err = Popen(cmd_args, stdout=PIPE).communicate()
     return out
 
 
@@ -29,7 +29,7 @@ if __name__ == '__main__':
     cmd = sys.argv[1]
 
     # reserve all the nodes from the beginning
-    run_cmd('./reserve.sh %d' % NUM_NODES[-1])
+    run_cmd(['/bin/bash', 'reserve.sh', '%d' % NUM_NODES[-1]])
 
     # get reserved node names from the generated machinefile
     with open('machinefile') as f:
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     results = {}
     for node_count in NUM_NODES:
         write_machinefile(nodes, node_count)
-        output = run_cmd('mpirun --machinefile machinefile ./run_mpi \'%s\'' % cmd)
+        output = run_cmd(['mpirun', '--machinefile', 'machinefile', './run_mpi', '%s' % cmd])
         try:
             if 'iozone' in cmd:
                 results[node_count] = IOZoneOutputParser.parse(output)
