@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 
+import argparse
 import json
 import sys
 from pprint import pprint
@@ -38,11 +39,14 @@ def run_cmd(cmd_args):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print("You need to pass in a command. "\
-              "Try it like ./dfs_bench.py 'some_command'", file=sys.stderr)
-        sys.exit(1)
-    cmd = sys.argv[1]
+    parser = argparse.ArgumentParser(description="DFS bench")
+    parser.add_argument('command', help="A single command to run on all nodes." \
+            " Be sure to quote it so it is just one arg.")
+    parser.add_argument('-f', '--file',
+            help="A file that contains the list of commands to run.")
+    args= parser.parse_args()
+
+    cmd = args.command
 
     # reserve all the nodes from the beginning
     run_cmd(['/bin/bash', 'reserve.sh', '%d' % NUM_NODES[-1]])
