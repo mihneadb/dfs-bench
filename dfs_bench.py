@@ -41,7 +41,8 @@ def run_cmd(cmd_args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="DFS bench")
     parser.add_argument('command', help="A single command to run on all nodes." \
-            " Be sure to quote it so it is just one arg.")
+            " Be sure to quote it so it is just one arg.",
+            nargs='*')
     parser.add_argument('-f', '--file',
             help="A file that contains the list of commands to run.")
     args= parser.parse_args()
