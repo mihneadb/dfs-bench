@@ -85,7 +85,7 @@ if __name__ == '__main__':
 
             if cmd.get('parse', False):
                 kind = None
-                if 'iozone' in cmd:
+                if 'iozone' in cmd['command']:
                     kind = 'iozone'
                 parsed = parse_output(output, kind)
                 results[node_count] = parsed
