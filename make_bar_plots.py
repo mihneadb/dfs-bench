@@ -36,11 +36,14 @@ if __name__ == '__main__':
             cores = str(cores) # for JSON indexing
             xs.append(int(cores))
             ys.append(int(data[cores]['total'][attr]))
+        # convert to MBs
+        ys = [y / 1e6 for y in ys]
+
         bottom = np.arange(len(cores_list))
         fig, ax = plt.subplots()
         ppl.bar(ax, bottom, ys, annotate=True, xticklabels=xs, grid='y')
-        plt.xlabel('Number of nodes')
-        plt.ylabel('Bytes')
+        plt.xlabel('Number of Nodes')
+        plt.ylabel('Aggregated Bandwidth (MB/s)')
         plt.title('%s' % attr[0].upper() + attr[1:])
         fig.savefig('plots/%s.png' % attr)
         plt.close(fig)
