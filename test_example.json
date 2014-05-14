@@ -2,7 +2,7 @@
     "commands": [
         {
             "type": "single",
-            "command": "echo ${NODENAME} > /tmp/test_single_cmd"
+            "command": "touch /var/scratch/mdr222/test_single_cmd${NODENAME}"
         },
         {
             "type": "all",
