@@ -13,7 +13,7 @@ from subprocess import Popen, PIPE
 NUM_NODES = [1, 2, 4, 8, 16]
 
 
-def run_command(command, nodes, node_count=len(NUM_NODES), node_id=0):
+def run_command(command, nodes, node_count=len(NUM_NODES)):
     write_machinefile(nodes, node_count)
     output = run_cmd(['mpirun', '--machinefile', 'machinefile', './run_mpi', '%s' % command])
     return output
@@ -55,15 +55,40 @@ if __name__ == '__main__':
     with open('machinefile') as f:
         nodes = [line.strip() for line in f.readlines() if line.strip()]
 
+    if args.file:
+        with open(args.file) as f:
+            data = json.load(f)
+            cmd_list = data['commands']
+    else:
+        # make a bogus cmd list with just one command
+        cmd_list = [
+            {
+                'type': 'all',
+                'command': cmd,
+                'parse': True
+            }
+        ]
+
     # run the benchmark with increasing numbers of nodes
     results = {}
     for node_count in NUM_NODES:
-        output = run_command(cmd, nodes, node_count)
-        kind = None
-        if 'iozone' in cmd:
-            kind = 'iozone'
-        parsed = parse_output(output, kind)
-        results[node_count] = parsed
+        for cmd in cmd_list:
+            if cmd['type'] == 'all':
+                output = run_command(cmd['command'], nodes, node_count)
+            elif cmd['type'] == 'single':
+                output = run_command(cmd['command'], nodes, 1)
+            else:
+                # skip unknown cmd type
+                print("Skipping unknown command of type %s." % cmd['type'],
+                    file=sys.stderr)
+                continue
+
+            if cmd.get('parse', False):
+                kind = None
+                if 'iozone' in cmd:
+                    kind = 'iozone'
+                parsed = parse_output(output, kind)
+                results[node_count] = parsed
 
     with open('results.json', 'wb') as f:
         json.dump(results, f, indent=2)

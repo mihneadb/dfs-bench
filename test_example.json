@@ -1,0 +1,14 @@
+{
+    "commands": [
+        {
+            "type": "single",
+            "command": "echo ${NODENAME} > /tmp/test_single_cmd"
+        },
+        {
+            "type": "all",
+            "command": "./iozone -f /var/scratch/mdr222/${NODENAME}_test -S 12000 -L 64 -c -e -s 1M -i0 -i1 -r 128 -R",
+            "parse": true
+        }
+    ]
+}
+
