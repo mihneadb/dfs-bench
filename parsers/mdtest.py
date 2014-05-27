@@ -8,15 +8,18 @@ class MDTestOutputParser(object):
     def get_relevant_chunk(text):
         # find first line
         lines = text.splitlines()
+        start = 0
         for i, line in enumerate(lines):
             if line.startswith('SUMMARY'):
+                # skip the summary line
+                start = i + 1
                 break
-        # skip the summary line
-        i += 1
+        end = 0
         for j, line in enumerate(lines[i:]):
             if not line.strip():
+                end = start + j
                 break
-        return '\n'.join(lines[i:i + j])
+        return '\n'.join(lines[start:end])
 
     @staticmethod
     def make_dict(text):
