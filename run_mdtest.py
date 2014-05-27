@@ -45,7 +45,7 @@ if __name__ == '__main__':
     # run the benchmark with increasing numbers of nodes
     results = {}
     for node_count in NUM_NODES:
-        output = run_command(cmd['command'], nodes, node_count)
+        output = run_command(cmd, nodes, node_count)
         parsed = MDTestOutputParser.parse(output)
         results[node_count] = {'total': parsed}
 
