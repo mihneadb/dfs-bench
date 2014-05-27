@@ -15,7 +15,9 @@ NUM_NODES = [1, 2, 4, 8, 16]
 
 def run_command(command, nodes, node_count=len(NUM_NODES)):
     write_machinefile(nodes, node_count)
-    output = run_cmd(['mpirun', '--machinefile', 'machinefile', '%s' % command])
+    args = ['mpirun', '--machinefile', 'machinefile']
+    args.extend(command.split(' '))
+    output = run_cmd(args)
     return output
 
 def write_machinefile(nodes, node_count):
