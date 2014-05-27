@@ -15,7 +15,7 @@ class MDTestOutputParser(object):
                 start = i + 1
                 break
         end = 0
-        for j, line in enumerate(lines[i:]):
+        for j, line in enumerate(lines[start:]):
             if not line.strip():
                 end = start + j
                 break
