@@ -47,7 +47,8 @@ if __name__ == '__main__':
             help="A file that contains the list of commands to run.")
     args= parser.parse_args()
 
-    cmd = args.command
+    if args.command:
+        cmd = args.command[0]
 
     # reserve all the nodes from the beginning
     run_cmd(['/bin/bash', 'reserve.sh', '%d' % NUM_NODES[-1]])
