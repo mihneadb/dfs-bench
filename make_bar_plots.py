@@ -37,7 +37,7 @@ if __name__ == '__main__':
             xs.append(int(cores))
             ys.append(int(data[cores]['total'][attr]))
         # convert to GBs
-        ys = [y / (1024 * 1024) for y in ys]
+        ys = [y / (1024.0 * 1024.0) for y in ys]
 
         bottom = np.arange(len(cores_list))
         fig, ax = plt.subplots()
