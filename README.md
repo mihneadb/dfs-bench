@@ -17,8 +17,14 @@ make # build the binary
 # run an iozone benchmark
 ./dfs_bench.py './iozone -f /var/scratch/mdr222/${NODENAME}_test -S 12000 -L 64 -c -e -s 1M -i0 -i1 -r 128 -R'
 
+# or an mdtest benchmark
+# ./run_mdtest.py './mdtest ...'
+
 # plot the results
 ./make_bar_plots.py results.json
+
+# or for mdtest results
+# ./mdtest_make_bar_plots.py results.json
 
 # see the plots in the plots/ directory
 ```
