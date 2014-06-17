@@ -1,7 +1,8 @@
 dfs-bench
 =========
 
-Benchmark distributed filesystems using MPI. Makes use of [iozone](http://www.iozone.org/).
+Benchmark distributed filesystems using MPI. Makes use of [iozone](http://www.iozone.org/)
+and [mdtest](sourceforge.net/projects/mdtest/).
 
 This is the code I'm writing for my bachelor's project at [VU Amsterdam](https://www.vu.nl/en/).
 
